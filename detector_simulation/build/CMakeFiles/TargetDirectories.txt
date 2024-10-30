@@ -1,0 +1,4 @@
+/Users/franciscomartinez/g4_tutorial/build/CMakeFiles/tute.dir
+/Users/franciscomartinez/g4_tutorial/build/CMakeFiles/Tutorial.dir
+/Users/franciscomartinez/g4_tutorial/build/CMakeFiles/edit_cache.dir
+/Users/franciscomartinez/g4_tutorial/build/CMakeFiles/rebuild_cache.dir

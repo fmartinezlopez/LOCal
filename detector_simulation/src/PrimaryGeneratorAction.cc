@@ -25,8 +25,8 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
 
 	fParticleGun->SetParticlePosition(pos);
 
-	G4double dtheta = 10.0*deg;
-	G4double dphi   = 25.0*deg;
+	G4double dtheta = 45.0*deg;
+	G4double dphi   = 45.0*deg;
 	G4double theta  = G4UniformRand()*dtheta;
 	G4double phi    = G4UniformRand()*dphi;
 	G4ThreeVector mom(sin(theta)*sin(phi),

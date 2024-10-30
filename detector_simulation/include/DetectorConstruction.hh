@@ -35,12 +35,12 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 		G4double fStartPos = 0.0*m;
 
-		G4int fNLayers = 2;
+		G4int fNLayers = 10;
 		G4double fAbsorberThickness = 5.0*mm;
 		G4double fScintillatorThickness = 10.0*mm;
 		G4double fLayerDistance = fAbsorberThickness + fScintillatorThickness;
 
-		G4int fNFibres = 30;
+		G4int fNFibres = 50;
 		G4double fFibreRadius = 1.0*mm;
 		G4double fFibreDistance = 2*fTransverseSize/(fNFibres+1);
 		G4double fFibreStartPos = fFibreDistance*(fNFibres/2);

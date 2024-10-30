@@ -130,10 +130,20 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
 	G4VPhysicalVolume *physDetector = new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, fStartPos+(fNLayers*fLayerDistance+fAbsorberThickness)/2), logicDetector, "physDetector", logicWorld, false, 0, true);
 
 	// Create a Rotation Matrix for the optical fibres
-	G4RotationMatrix* Rotation = new G4RotationMatrix();
-	Rotation->rotateX(0*deg);
-	Rotation->rotateY(M_PI/2.0*rad);
-	Rotation->rotateZ(0*deg);
+	G4RotationMatrix* Rotation_even = new G4RotationMatrix();
+	Rotation_even->rotateX(0*deg);
+	Rotation_even->rotateY(M_PI/2.0*rad);
+	Rotation_even->rotateZ(0*deg);
+
+	G4RotationMatrix* Rotation_odd = new G4RotationMatrix();
+	Rotation_odd->rotateX(M_PI/2.0*rad);
+	Rotation_odd->rotateY(0*deg);
+	Rotation_odd->rotateZ(0*deg);
+
+	G4RotationMatrix* Rotation_SiPM = new G4RotationMatrix();
+	Rotation_SiPM->rotateY(0*deg);
+	Rotation_SiPM->rotateX(0*deg);
+	Rotation_SiPM->rotateZ(M_PI/2.0*rad);
 
 	logicSiPM_left  = new G4LogicalVolume(solidSiPM, worldMat, "logicSiPM_left");
 	logicSiPM_right = new G4LogicalVolume(solidSiPM, worldMat, "logicSiPM_right");
@@ -150,11 +160,23 @@ G4VPhysicalVolume *DetectorConstruction::Construct()
 
 			logicOpticFibre = new G4LogicalVolume(solidOpticFibre, fibreMat, "logicOpticFibre");
 
-			G4VPhysicalVolume *physOpticFibre = new G4PVPlacement(Rotation, G4ThreeVector(0.0, fFibreStartPos-fFibreDistance*jFibre, 0.0), logicOpticFibre, "physOpticFibre", logicScintillator, false, 100*iLayer+jFibre, true);
+			if (iLayer%2 == 0) {
 
-			G4VPhysicalVolume *physSiPM_left = new G4PVPlacement(0, G4ThreeVector(fTransverseSize+0.5*mm, fFibreStartPos-fFibreDistance*jFibre, fStartPos+fLayerDistance/2+iLayer*fLayerDistance), logicSiPM_left, "physSiPM_left", logicWorld, false, 1000*(2*iLayer+1)+jFibre, true);
+				G4VPhysicalVolume *physOpticFibre = new G4PVPlacement(Rotation_even, G4ThreeVector(0.0, fFibreStartPos-fFibreDistance*jFibre, 0.0), logicOpticFibre, "physOpticFibre", logicScintillator, false, 100*iLayer+jFibre, true);
 
-			G4VPhysicalVolume *physSiPM_right = new G4PVPlacement(0, G4ThreeVector(-fTransverseSize-0.5*mm, fFibreStartPos-fFibreDistance*jFibre, fStartPos+fLayerDistance/2+iLayer*fLayerDistance), logicSiPM_right, "physSiPM_right", logicWorld, false, 2000*(iLayer+1)+jFibre, true);
+				G4VPhysicalVolume *physSiPM_left = new G4PVPlacement(0, G4ThreeVector(fTransverseSize+0.5*mm, fFibreStartPos-fFibreDistance*jFibre, fStartPos+fLayerDistance/2+iLayer*fLayerDistance), logicSiPM_left, "physSiPM_left", logicWorld, false, 1000*(2*iLayer+1)+jFibre, true);
+
+				G4VPhysicalVolume *physSiPM_right = new G4PVPlacement(0, G4ThreeVector(-fTransverseSize-0.5*mm, fFibreStartPos-fFibreDistance*jFibre, fStartPos+fLayerDistance/2+iLayer*fLayerDistance), logicSiPM_right, "physSiPM_right", logicWorld, false, 2000*(iLayer+1)+jFibre, true);
+
+			} else {
+
+				G4VPhysicalVolume *physOpticFibre = new G4PVPlacement(Rotation_odd, G4ThreeVector(fFibreStartPos-fFibreDistance*jFibre, 0.0, 0.0), logicOpticFibre, "physOpticFibre", logicScintillator, false, 100*iLayer+jFibre, true);
+
+				G4VPhysicalVolume *physSiPM_left = new G4PVPlacement(Rotation_SiPM, G4ThreeVector(fFibreStartPos-fFibreDistance*jFibre, fTransverseSize+0.5*mm, fStartPos+fLayerDistance/2+iLayer*fLayerDistance), logicSiPM_left, "physSiPM_left", logicWorld, false, 1000*(2*iLayer+1)+jFibre, true);
+
+				G4VPhysicalVolume *physSiPM_right = new G4PVPlacement(Rotation_SiPM, G4ThreeVector(fFibreStartPos-fFibreDistance*jFibre, -fTransverseSize-0.5*mm, fStartPos+fLayerDistance/2+iLayer*fLayerDistance), logicSiPM_right, "physSiPM_right", logicWorld, false, 2000*(iLayer+1)+jFibre, true);
+
+			}
 
 		}
 

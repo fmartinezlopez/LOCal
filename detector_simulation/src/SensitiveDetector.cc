@@ -16,25 +16,21 @@ G4bool SensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist)
     G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
     G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
-    G4ThreeVector posPhoton = preStepPoint->GetPosition();
-    G4ThreeVector momPhoton = preStepPoint->GetMomentum();
-
-    G4double time = preStepPoint->GetGlobalTime();
-
-    G4double wlen = (1.239841939*eV/momPhoton.mag())*1E+03;
-
-    //G4cout << "Photon position: " << posPhoton << G4endl;
+    G4double energyPhoton = preStepPoint->GetMomentum().mag();
+    G4double timePhoton = preStepPoint->GetGlobalTime();
 
     const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
 
     G4int copyNo = touchable->GetCopyNumber();
 
-    G4cout << "Copy number: " << copyNo << G4endl;
+    G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
-    G4VPhysicalVolume *physVol = touchable->GetVolume();
-    G4ThreeVector posDetector = physVol->GetTranslation();
-
-    //G4cout << "Detector position: " << posDetector << G4endl;
+    G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+    analysisManager->FillNtupleIColumn(0, evt);
+    analysisManager->FillNtupleIColumn(1, copyNo);
+    analysisManager->FillNtupleDColumn(2, energyPhoton);
+    analysisManager->FillNtupleDColumn(3, timePhoton);
+    analysisManager->AddNtupleRow(0);
 
     return true;
 

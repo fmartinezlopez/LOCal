@@ -7,7 +7,6 @@
 #include "G4UIExecutive.hh"
 
 #include "DetectorConstruction.hh"
-#include "DetectorConstructionAlt.hh"
 //#include "PhysicsList.hh"
 #include "ActionInitialization.hh"
 
@@ -66,14 +65,6 @@ int main(int argc, char** argv) {
 		ui->SessionStart();
 		delete ui;
 	}
-
-	//UImanager->ApplyCommand("/vis/open OGL");
-	//UImanager->ApplyCommand("/vis/viewer/set/viewpointVector 1 1 1");
-	//UImanager->ApplyCommand("/vis/drawVolume");
-	//UImanager->ApplyCommand("/vis/viewer/set/autoRefresh true");
-	//UImanager->ApplyCommand("/vis/scene/add/trajectories smooth");
-
-	//ui->SessionStart();
 
 	delete visManager;
  	delete runManager;
